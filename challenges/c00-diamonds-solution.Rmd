@@ -1,0 +1,56 @@
+---
+title: "Getting Started: Diamonds"
+author: "Zachary del Rosario"
+date: 2020-06-25
+output:
+  github_document
+---
+
+*Purpose*: Throughout this course, you'll complete a large number of *exercises* and *challenges*. Exercises are meant to introduce content with easy-to-solve problems, while challenges are meant to make you think more deeply about and apply the content. The challenges will start out highly-scaffolded, and become progressively open-ended.
+
+In this challenge, you will go through the process of exploring, documenting, and sharing an analysis of a dataset. We will use these skills again and again in each challenge.
+
+```{r setup}
+library(tidyverse)
+```
+
+# Data Exploration
+<!-- -------------------------------------------------- -->
+
+In this first stage, you will explore the `diamonds` dataset and document your observations.
+
+__q1__ Create a plot of `price` vs `carat` of the `diamonds` dataset below. Document your observations from the visual.
+
+*Hint*: We learned how to do this in `e-vis00-basics`!
+
+```{r q1-task}
+## TASK: Plot `price` vs `carat` below
+diamonds %>%
+  ggplot(aes(carat, price)) +
+  geom_point()
+```
+
+**Observations**:
+
+- `price` generally increases with `carat`
+- The trend is not 'clean'; there is no single curve in the relationship
+
+__q2__ Create a visualization showing variables `carat`, `price`, and `cut` simultaneously. Experiment with which variable you assign to which aesthetic (`x`, `y`, etc.) to find an effective visual.
+
+```{r q2-task}
+## TASK: Plot `price`, `carat`, and `cut` below
+diamonds %>%
+  ggplot(aes(carat, price, color = cut)) +
+  geom_point(alpha = 1 / 3) +
+  geom_smooth(se = FALSE) +
+  scale_x_log10() +
+  scale_y_log10()
+```
+
+**Observations**:
+
+- `price` generally increases with `carat`
+- The `cut` helps explain the variation in price;
+  - `Ideal` cut diamonds tend to be more expensive
+  - `Fair` cut diamonds tend to be less expensive
+
