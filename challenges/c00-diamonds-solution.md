@@ -1,7 +1,7 @@
 Getting Started: Diamonds
 ================
-(Your name here)
-2020-
+Zach del Rosario
+2020-06-11
 
 *Purpose*: Throughout this course, you’ll complete a large number of
 *exercises* and *challenges*. Exercises are meant to introduce content
