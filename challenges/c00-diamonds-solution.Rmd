@@ -18,6 +18,72 @@ library(tidyverse)
 library(rzdr)
 ```
 
+# Background
+<!-- -------------------------------------------------- -->
+
+Since I'm presenting, I'll add a bit of background on the data:
+
+*Aside*: It's always a good idea to do a `glimpse` and `summary` first:
+
+```{r glimpse}
+diamonds %>% glimpse()
+```
+
+The glimpse shows us what variables are in the dataset, and a handful of values
+just to get a sample of what we have.
+
+```{r summary}
+diamonds %>% summary()
+```
+
+The summary gives us a set of standard statistics for each of the variables.
+This gives us a sense of "scale" for each variable.
+
+## Pricing and the 4 C's
+<!-- ------------------------- -->
+
+Diamond pricing is traditionally based on the "Four C's": cut, color, clarity, and carat.
+Three of those variables are *factors*: discrete variables with fixed *levels*.
+
+[Diamond cuts](https://en.wikipedia.org/wiki/Diamond_cut) are fairly elaborate,
+with many different styles. However the [American Gem
+Society](https://en.wikipedia.org/wiki/American_Gem_Society) publishes standards
+for its own cut grade ranking, which ranges from `Fair` to `Ideal.
+
+```{r levels-cut}
+diamonds %>%
+  pull(cut) %>%
+  levels()
+```
+
+- `Fair` is the lowest (least valuable) level
+- `Ideal` is the highest (most valuable) level
+
+```{r levels-color}
+diamonds %>%
+  pull(color) %>%
+  levels()
+```
+
+[Diamond colors](https://en.wikipedia.org/wiki/Diamond_color) range from colorless `D` to more colorful `J`. Grades above `J`
+exist with more apparent color.
+
+```{r levels-clarity}
+diamonds %>%
+  pull(clarity) %>%
+  levels()
+```
+
+[Diamond clarity](https://en.wikipedia.org/wiki/Diamond_clarity) refers to the lack of inclusions (internal defects) and blemishes (surface defects).
+
+- `I1` refers to the *included* category, meaning undesirable inclusions are visible to the naked eye. This is the lowest level.
+- `IF` refers to *internally flawless*, which is the highest level in the dataset.
+- `FL` refers to *flawless*, which is rare and refers to a diamond with neither inclusions nor blemishes.
+
+[Carat](https://en.wikipedia.org/wiki/Carat_(mass)) is a unit of mass often used
+for gems. This is a continuous variable. Generally we would expect higher carat
+to correspond to a higher sale price.
+
 # Data Exploration
 <!-- -------------------------------------------------- -->
 

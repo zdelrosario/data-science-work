@@ -35,6 +35,129 @@ library(tidyverse)
 library(rzdr)
 ```
 
+# Background
+
+<!-- -------------------------------------------------- -->
+
+Since I’m presenting, I’ll add a bit of background on the data:
+
+*Aside*: It’s always a good idea to do a `glimpse` and `summary` first:
+
+``` r
+diamonds %>% glimpse()
+```
+
+    ## Rows: 53,940
+    ## Columns: 10
+    ## $ carat   <dbl> 0.23, 0.21, 0.23, 0.29, 0.31, 0.24, 0.24, 0.26, 0.22, 0.23, 0…
+    ## $ cut     <ord> Ideal, Premium, Good, Premium, Good, Very Good, Very Good, Ve…
+    ## $ color   <ord> E, E, E, I, J, J, I, H, E, H, J, J, F, J, E, E, I, J, J, J, I…
+    ## $ clarity <ord> SI2, SI1, VS1, VS2, SI2, VVS2, VVS1, SI1, VS2, VS1, SI1, VS1,…
+    ## $ depth   <dbl> 61.5, 59.8, 56.9, 62.4, 63.3, 62.8, 62.3, 61.9, 65.1, 59.4, 6…
+    ## $ table   <dbl> 55, 61, 65, 58, 58, 57, 57, 55, 61, 61, 55, 56, 61, 54, 62, 5…
+    ## $ price   <int> 326, 326, 327, 334, 335, 336, 336, 337, 337, 338, 339, 340, 3…
+    ## $ x       <dbl> 3.95, 3.89, 4.05, 4.20, 4.34, 3.94, 3.95, 4.07, 3.87, 4.00, 4…
+    ## $ y       <dbl> 3.98, 3.84, 4.07, 4.23, 4.35, 3.96, 3.98, 4.11, 3.78, 4.05, 4…
+    ## $ z       <dbl> 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39, 2…
+
+The glimpse shows us what variables are in the dataset, and a handful of
+values just to get a sample of what we
+    have.
+
+``` r
+diamonds %>% summary()
+```
+
+    ##      carat               cut        color        clarity          depth      
+    ##  Min.   :0.2000   Fair     : 1610   D: 6775   SI1    :13065   Min.   :43.00  
+    ##  1st Qu.:0.4000   Good     : 4906   E: 9797   VS2    :12258   1st Qu.:61.00  
+    ##  Median :0.7000   Very Good:12082   F: 9542   SI2    : 9194   Median :61.80  
+    ##  Mean   :0.7979   Premium  :13791   G:11292   VS1    : 8171   Mean   :61.75  
+    ##  3rd Qu.:1.0400   Ideal    :21551   H: 8304   VVS2   : 5066   3rd Qu.:62.50  
+    ##  Max.   :5.0100                     I: 5422   VVS1   : 3655   Max.   :79.00  
+    ##                                     J: 2808   (Other): 2531                  
+    ##      table           price             x                y         
+    ##  Min.   :43.00   Min.   :  326   Min.   : 0.000   Min.   : 0.000  
+    ##  1st Qu.:56.00   1st Qu.:  950   1st Qu.: 4.710   1st Qu.: 4.720  
+    ##  Median :57.00   Median : 2401   Median : 5.700   Median : 5.710  
+    ##  Mean   :57.46   Mean   : 3933   Mean   : 5.731   Mean   : 5.735  
+    ##  3rd Qu.:59.00   3rd Qu.: 5324   3rd Qu.: 6.540   3rd Qu.: 6.540  
+    ##  Max.   :95.00   Max.   :18823   Max.   :10.740   Max.   :58.900  
+    ##                                                                   
+    ##        z         
+    ##  Min.   : 0.000  
+    ##  1st Qu.: 2.910  
+    ##  Median : 3.530  
+    ##  Mean   : 3.539  
+    ##  3rd Qu.: 4.040  
+    ##  Max.   :31.800  
+    ## 
+
+The summary gives us a set of standard statistics for each of the
+variables. This gives us a sense of “scale” for each variable.
+
+## Pricing and the 4 C’s
+
+<!-- ------------------------- -->
+
+Diamond pricing is traditionally based on the “Four C’s”: cut, color,
+clarity, and carat. Three of those variables are *factors*: discrete
+variables with fixed *levels*.
+
+[Diamond cuts](https://en.wikipedia.org/wiki/Diamond_cut) are fairly
+elaborate, with many different styles. However the [American Gem
+Society](https://en.wikipedia.org/wiki/American_Gem_Society) publishes
+standards for its own cut grade ranking, which ranges from `Fair` to
+\`Ideal.
+
+``` r
+diamonds %>%
+  pull(cut) %>%
+  levels()
+```
+
+    ## [1] "Fair"      "Good"      "Very Good" "Premium"   "Ideal"
+
+  - `Fair` is the lowest (least valuable) level
+  - `Ideal` is the highest (most valuable) level
+
+<!-- end list -->
+
+``` r
+diamonds %>%
+  pull(color) %>%
+  levels()
+```
+
+    ## [1] "D" "E" "F" "G" "H" "I" "J"
+
+[Diamond colors](https://en.wikipedia.org/wiki/Diamond_color) range from
+colorless `D` to more colorful `J`. Grades above `J` exist with more
+apparent color.
+
+``` r
+diamonds %>%
+  pull(clarity) %>%
+  levels()
+```
+
+    ## [1] "I1"   "SI2"  "SI1"  "VS2"  "VS1"  "VVS2" "VVS1" "IF"
+
+[Diamond clarity](https://en.wikipedia.org/wiki/Diamond_clarity) refers
+to the lack of inclusions (internal defects) and blemishes (surface
+defects).
+
+  - `I1` refers to the *included* category, meaning undesirable
+    inclusions are visible to the naked eye. This is the lowest level.
+  - `IF` refers to *internally flawless*, which is the highest level in
+    the dataset.
+  - `FL` refers to *flawless*, which is rare and refers to a diamond
+    with neither inclusions nor blemishes.
+
+[Carat](https://en.wikipedia.org/wiki/Carat_\(mass\)) is a unit of mass
+often used for gems. This is a continuous variable. Generally we would
+expect higher carat to correspond to a higher sale price.
+
 # Data Exploration
 
 <!-- -------------------------------------------------- -->
