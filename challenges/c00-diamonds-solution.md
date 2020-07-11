@@ -31,6 +31,10 @@ library(tidyverse)
     ## ✖ dplyr::filter() masks stats::filter()
     ## ✖ dplyr::lag()    masks stats::lag()
 
+``` r
+library(rzdr)
+```
+
 # Data Exploration
 
 <!-- -------------------------------------------------- -->
@@ -68,7 +72,8 @@ diamonds %>%
   ggplot(aes(carat, price, color = cut)) +
   geom_point(alpha = 1 / 3) +
   scale_x_log10() +
-  scale_y_log10()
+  scale_y_log10() +
+  theme_common()
 ```
 
 ![](c00-diamonds-solution_files/figure-gfm/q2-task-1.png)<!-- -->
@@ -93,12 +98,14 @@ diamonds %>%
   geom_smooth() +
   scale_x_log10() +
   scale_y_log10() +
+  theme_common() +
   theme(legend.position = "bottom")
 ```
 
     ## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
 
 ![](c00-diamonds-solution_files/figure-gfm/elaboration-1.png)<!-- -->
+
 **Observations**:
 
   - The relationships between `price` and `carat` is very nearly linear
@@ -124,6 +131,7 @@ diamonds %>%
   scale_x_continuous(breaks = c(0.2, 0.25, 0.3)) +
   viridis::scale_fill_viridis() +
   facet_wrap(~cut) +
+  theme_common() +
   theme(legend.position = "bottom")
 ```
 
@@ -152,7 +160,8 @@ distribution `carat` values.
 ``` r
 diamonds %>%
   ggplot(aes(carat)) +
-  geom_histogram(bins = 120)
+  geom_histogram(bins = 120) +
+  theme_common()
 ```
 
 ![](c00-diamonds-solution_files/figure-gfm/bonus1-1.png)<!-- -->
@@ -172,7 +181,8 @@ diamonds %>%
   geom_histogram(boundary = wid / 2, binwidth = wid) +
   scale_x_continuous(
     breaks = c(0.3, 0.4, 0.5, 0.7, 0.9, 1, 1.2)
-  )
+  ) +
+  theme_common()
 ```
 
 ![](c00-diamonds-solution_files/figure-gfm/bonus2-1.png)<!-- -->
