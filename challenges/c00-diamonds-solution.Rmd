@@ -52,6 +52,7 @@ diamonds %>%
 **Observations**:
 
 - `price` generally increases with `carat`
+  - Furthermore the trend is roughly linear on a log-log scale; this implies a power-law relation between `price` and `carat`
 - The `cut` helps explain the variation in price;
   - `Ideal` cut diamonds tend to be more expensive
   - `Fair` cut diamonds tend to be less expensive
@@ -79,12 +80,12 @@ diamonds %>%
 Let's follow up the low-carat diamonds:
 
 ```{r focus-low-carat}
-diamonds %>% 
-  filter(carat <= 0.3) %>% 
-  
+diamonds %>%
+  filter(carat <= 0.3) %>%
+
   ggplot(aes(carat, price)) +
   geom_hex(bins = 10) +
-  
+
   scale_x_continuous(breaks = c(0.2, 0.25, 0.3)) +
   viridis::scale_fill_viridis() +
   facet_wrap(~cut) +
@@ -106,7 +107,7 @@ diamonds %>%
 We haven't gotten to this point in the exercise sequence yet, but it's usually a good idea to start with 1-dimensional investigations of the data when doing EDA. There's a very interesting pattern just within the distribution `carat` values.
 
 ```{r bonus1}
-diamonds %>% 
+diamonds %>%
   ggplot(aes(carat)) +
   geom_histogram(bins = 120)
 ```
@@ -117,8 +118,8 @@ diamonds %>%
 
 ```{r bonus2}
 wid <- 0.01
-diamonds %>% 
-  filter(carat <= 1.3) %>% 
+diamonds %>%
+  filter(carat <= 1.3) %>%
   ggplot(aes(carat)) +
   geom_histogram(boundary = wid / 2, binwidth = wid) +
   scale_x_continuous(
@@ -131,4 +132,3 @@ diamonds %>%
 - There appear to be peaks in `carat` at particular `0.1` increments.
 - These peaks tend to have a sharp drop to their left (lower values), with a slower dropoff to their right (higher values).
 - Since these diamonds are meant for sale, these patterns are likely reflect the desires of the market: i.e. people desire diamonds at these specific carat values, and will buy diamonds slightly above (but not slightly below) those values.
-

@@ -3,9 +3,6 @@ Getting Started: Diamonds
 (Your name here)
 2020-
 
-  - [Data Exploration](#data-exploration)
-  - [Bonus Observations](#bonus-observations)
-
 *Purpose*: Throughout this course, you’ll complete a large number of
 *exercises* and *challenges*. Exercises are meant to introduce content
 with easy-to-solve problems, while challenges are meant to make you
@@ -14,7 +11,8 @@ out highly-scaffolded, and become progressively open-ended.
 
 In this challenge, you will go through the process of exploring,
 documenting, and sharing an analysis of a dataset. We will use these
-skills again and again in each challenge.
+skills again and again in each
+    challenge.
 
 <!-- include-rubric -->
 
@@ -22,16 +20,16 @@ skills again and again in each challenge.
 library(tidyverse)
 ```
 
-    ## ── Attaching packages ──────────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──
+    ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──
 
-    ## ✓ ggplot2 3.3.1     ✓ purrr   0.3.4
-    ## ✓ tibble  3.0.1     ✓ dplyr   1.0.0
-    ## ✓ tidyr   1.1.0     ✓ stringr 1.4.0
-    ## ✓ readr   1.3.1     ✓ forcats 0.5.0
+    ## ✔ ggplot2 3.3.1     ✔ purrr   0.3.4
+    ## ✔ tibble  3.0.1     ✔ dplyr   1.0.0
+    ## ✔ tidyr   1.1.0     ✔ stringr 1.4.0
+    ## ✔ readr   1.3.1     ✔ forcats 0.5.0
 
-    ## ── Conflicts ─────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
-    ## x dplyr::filter() masks stats::filter()
-    ## x dplyr::lag()    masks stats::lag()
+    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ✖ dplyr::filter() masks stats::filter()
+    ## ✖ dplyr::lag()    masks stats::lag()
 
 # Data Exploration
 
@@ -78,6 +76,8 @@ diamonds %>%
 **Observations**:
 
   - `price` generally increases with `carat`
+      - Furthermore the trend is roughly linear on a log-log scale; this
+        implies a power-law relation between `price` and `carat`
   - The `cut` helps explain the variation in price;
       - `Ideal` cut diamonds tend to be more expensive
       - `Fair` cut diamonds tend to be less expensive
@@ -115,12 +115,12 @@ diamonds %>%
 Let’s follow up the low-carat diamonds:
 
 ``` r
-diamonds %>% 
-  filter(carat <= 0.3) %>% 
-  
+diamonds %>%
+  filter(carat <= 0.3) %>%
+
   ggplot(aes(carat, price)) +
   geom_hex(bins = 10) +
-  
+
   scale_x_continuous(breaks = c(0.2, 0.25, 0.3)) +
   viridis::scale_fill_viridis() +
   facet_wrap(~cut) +
@@ -150,7 +150,7 @@ data when doing EDA. There’s a very interesting pattern just within the
 distribution `carat` values.
 
 ``` r
-diamonds %>% 
+diamonds %>%
   ggplot(aes(carat)) +
   geom_histogram(bins = 120)
 ```
@@ -166,8 +166,8 @@ diamonds %>%
 
 ``` r
 wid <- 0.01
-diamonds %>% 
-  filter(carat <= 1.3) %>% 
+diamonds %>%
+  filter(carat <= 1.3) %>%
   ggplot(aes(carat)) +
   geom_histogram(boundary = wid / 2, binwidth = wid) +
   scale_x_continuous(
